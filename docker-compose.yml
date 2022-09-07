@@ -1,0 +1,15 @@
+version: "3"
+services:
+  app:
+    container_name: react-learn
+    user: "root"
+    image: node:18
+    working_dir: /var/www/html/app/
+    entrypoint: /bin/bash
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/var/www/html/app
+    ports:
+      - "80:80"
+    tty: true
