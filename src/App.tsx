@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './App.module.css'
-import { Carousel, Footer, Header, ProductCollection, SideMenu } from './components'
+import { Carousel, Footer, Header, ProductCollection, SideMenu, Sponsors } from './components'
 import { Col, Row, Typography } from 'antd'
 import { productList1, productList2, productList3 } from './mockups'
 
@@ -57,6 +57,7 @@ function App(): JSX.Element {
           sideImage={sideImage3}
           products={productList3}
         />
+        <Sponsors />
       </div>
       <Footer />
     </div>
