@@ -1,4 +1,5 @@
 import i18n from 'i18next'
+import { ADD_LANGUAGE, CHANGE_LANGUAGE, LanguageActions } from '@/redux/language/actions'
 
 export interface State {
   language: 'zh' | 'en'
@@ -16,12 +17,12 @@ const defaultState: State = {
   ]
 }
 
-export default (state = defaultState, action): any => {
+export default (state = defaultState, action: LanguageActions): any => {
   switch (action.type) {
-    case 'change_language':
+    case CHANGE_LANGUAGE:
       void i18n.changeLanguage(action.payload).then()
       return { ...state, language: action.payload }
-    case 'add_language':
+    case ADD_LANGUAGE:
       return { ...state, languageList: [...state.languageList, action.payload] }
     default:
       return state
