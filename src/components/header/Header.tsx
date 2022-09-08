@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Header.module.css'
 import { Button, Dropdown, Input, Layout, Menu, Typography } from 'antd'
-import logo from '../../assets/react.svg'
+import logo from '@/assets/react.svg'
 import { GlobalOutlined } from '@ant-design/icons'
 
 export const Header: React.FC = () => {

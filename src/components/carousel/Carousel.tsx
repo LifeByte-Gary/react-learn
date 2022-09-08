@@ -1,0 +1,20 @@
+import React from 'react'
+import { Carousel as AntCarousel, Image } from 'antd'
+import styles from './Carousel.module.css'
+
+import carouselImage1 from '@images/carousel_1.jpg'
+import carouselImage2 from '@images/carousel_2.jpg'
+import carouselImage3 from '@images/carousel_3.jpg'
+
+export const Carousel: React.FC = () => {
+  return (
+    <AntCarousel
+      autoplay
+      className={styles.slider}
+    >
+      <Image src={carouselImage1} />
+      <Image src={carouselImage2} />
+      <Image src={carouselImage3} />
+    </AntCarousel>
+  )
+}
