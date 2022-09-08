@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './App.module.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { DetailPage, HomePage, RegisterPage, SignInPage } from '@/pages'
+import '@/i18n/configs'
 
 function App(): JSX.Element {
   return (
