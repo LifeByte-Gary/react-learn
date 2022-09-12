@@ -8,7 +8,7 @@ import sideImage3 from '@images/sider_2019_02-04-2.png'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { RootState } from '@/redux/store'
-import { fetchRecommendedProductsActionCreator } from '@/redux/recommendedProducts/recommendedProductsActions'
+import { fetchRecommendedProductsActionCreator } from '@/redux/recommendedProducts/actions'
 
 const mapStateToProps = (
   state: RootState

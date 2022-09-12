@@ -1,4 +1,4 @@
-import { RecommendedProductsAction } from '@/redux/recommendedProducts/recommendedProductsActions'
+import { RecommendedProductsAction } from '@/redux/recommendedProducts/actions'
 
 interface RecommendedProductsState {
   loading: boolean
