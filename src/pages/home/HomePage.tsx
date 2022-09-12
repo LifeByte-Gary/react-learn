@@ -1,18 +1,65 @@
 import React from 'react'
 import { Carousel, Footer, Header, ProductCollection, SideMenu, Sponsors } from '@/components'
 import styles from './HomePage.module.css'
-import { Col, Row, Typography } from 'antd'
-import { productList1, productList2, productList3 } from './mockups'
-
+import { Col, Row, Spin, Typography } from 'antd'
 import sideImage from '@images/sider_2019_12-09.png'
 import sideImage2 from '@images/sider_2019_02-04.png'
 import sideImage3 from '@images/sider_2019_02-04-2.png'
 import { withTranslation, WithTranslation } from 'react-i18next'
+import axios from 'axios'
 
-class HomePageComponent extends React.Component<WithTranslation> {
+interface State {
+  loading: boolean
+  error: string | null
+  productList: any[]
+}
+
+class HomePageComponent extends React.Component<WithTranslation, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: true,
+      error: null,
+      productList: []
+    }
+  }
+
+  async componentDidMount(): Promise<void> {
+    try {
+      const { data } = await axios.get('http://123.56.149.216:8080/api/productCollections')
+      this.setState({
+        loading: false,
+        error: null,
+        productList: data
+      })
+    } catch (err) {
+      if (err instanceof Error) {
+        this.setState({
+          loading: false,
+          error: err.message,
+          productList: []
+        })
+      }
+    }
+  }
+
   render(): React.ReactNode {
     const { t } = this.props
 
+    if (this.state.loading)
+      return (
+        <Spin
+          style={{
+            marginTop: 200,
+            marginBottom: 200,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            width: '100%'
+          }}
+        />
+      )
+
+    if (this.state.error != null) return <div>Error: {this.state.error}</div>
     return (
       <>
         <Header />
@@ -35,7 +82,7 @@ class HomePageComponent extends React.Component<WithTranslation> {
               </Typography.Title>
             }
             sideImage={sideImage}
-            products={productList1}
+            products={this.state.productList[0].touristRoutes}
           />
           <ProductCollection
             title={
@@ -47,7 +94,7 @@ class HomePageComponent extends React.Component<WithTranslation> {
               </Typography.Title>
             }
             sideImage={sideImage2}
-            products={productList2}
+            products={this.state.productList[1].touristRoutes}
           />
           <ProductCollection
             title={
@@ -59,7 +106,7 @@ class HomePageComponent extends React.Component<WithTranslation> {
               </Typography.Title>
             }
             sideImage={sideImage3}
-            products={productList3}
+            products={this.state.productList[2].touristRoutes}
           />
           <Sponsors />
         </div>
