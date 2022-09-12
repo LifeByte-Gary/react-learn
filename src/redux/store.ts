@@ -1,7 +1,13 @@
-import { createStore } from 'redux'
+import { combineReducers, createStore } from 'redux'
 import languageReducer from '@/redux/language/reducer'
+import recommendedProductsReducer from '@/redux/recommendedProducts/recommendedProductsReducer'
 
-const store = createStore(languageReducer)
+const rootReducer = combineReducers({
+  language: languageReducer,
+  recommendedProducts: recommendedProductsReducer
+})
+
+const store = createStore(rootReducer)
 
 export default store
 

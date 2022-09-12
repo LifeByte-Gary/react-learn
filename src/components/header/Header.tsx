@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next'
 export const Header: React.FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const language = useAppSelector((state) => state.language)
-  const languageList = useAppSelector((state) => state.languageList)
+  const language = useAppSelector((state) => state.language.language)
+  const languageList = useAppSelector((state) => state.language.languageList)
   const dispatch = useAppDispatch()
 
   const menuClickHandler = (e): void => {
