@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 // import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Anchor, Col, Divider, Menu, Row, Spin, TimePicker, Typography } from 'antd'
@@ -7,6 +7,8 @@ import { Footer, Header } from '@/components'
 import { ProductIntro } from '@/components/productIntro'
 import { ProductComments } from '@/components/productComments'
 import { commentMockData } from './mockup'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { productDetailSlice } from '@/redux/productDetail/slice'
 
 // interface MatchParams {
 //   id: string
@@ -14,21 +16,19 @@ import { commentMockData } from './mockup'
 
 export const DetailPage: React.FC = () => {
   // const { id } = useParams<keyof MatchParams>()
-  const [loading, setLoading] = useState<boolean>(true)
-  const [product, setProduct] = useState<any>(null)
-  const [error, setError] = useState<string | null>(null)
+  const loading = useAppSelector((state) => state.productDetail.loading)
+  const error = useAppSelector((state) => state.productDetail.error)
+  const product = useAppSelector((state) => state.productDetail.product)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      setLoading(true)
+      dispatch(productDetailSlice.actions.fetchStart())
       try {
         const { data } = await axios.get('http://123.56.149.216:8080/api/touristRoutes/fb6d4f10-79ed-4aff-a915-4ce29dc9c7e1')
-        setProduct(data)
-        setError(null)
-        setLoading(false)
+        dispatch(productDetailSlice.actions.fetchSuccess(data))
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error')
-        setLoading(false)
+        dispatch(productDetailSlice.actions.fetchError(err instanceof Error ? err.message : 'Error'))
       }
     }
 
