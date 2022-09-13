@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 // import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { Col, Row, Spin, TimePicker } from 'antd'
+import { Anchor, Col, Divider, Menu, Row, Spin, TimePicker, Typography } from 'antd'
 import styles from './DetailPage.module.css'
 import { Footer, Header } from '@/components'
 import { ProductIntro } from '@/components/productIntro'
+import { ProductComments } from '@/components/productComments'
+import { commentMockData } from './mockup'
 
 // interface MatchParams {
 //   id: string
@@ -72,27 +74,85 @@ export const DetailPage: React.FC = () => {
           </Row>
         </div>
         {/* 锚点菜单 */}
-        <div className={styles.productDetailAnchor}></div>
+        <Anchor className={styles.productDetailAnchor}>
+          <Menu mode="horizontal">
+            <Menu.Item key="1">
+              <Anchor.Link
+                href="#feature"
+                title="产品特色"
+              ></Anchor.Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Anchor.Link
+                href="#fees"
+                title="费用"
+              ></Anchor.Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Anchor.Link
+                href="#notes"
+                title="预订须知"
+              ></Anchor.Link>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Anchor.Link
+                href="#comments"
+                title="用户评价"
+              ></Anchor.Link>
+            </Menu.Item>
+          </Menu>
+        </Anchor>
         {/* 产品特色 */}
         <div
           id="feature"
           className={styles.productDetailContainer}
-        ></div>
+        >
+          <Divider orientation={'center'}>
+            <Typography.Title level={3}>产品特色</Typography.Title>
+          </Divider>
+          <div
+            dangerouslySetInnerHTML={{ __html: product.features }}
+            style={{ margin: 50 }}
+          ></div>
+        </div>
         {/* 费用 */}
         <div
           id="fees"
           className={styles.productDetailContainer}
-        ></div>
+        >
+          <Divider orientation={'center'}>
+            <Typography.Title level={3}>费用</Typography.Title>
+          </Divider>
+          <div
+            dangerouslySetInnerHTML={{ __html: product.fees }}
+            style={{ margin: 50 }}
+          ></div>
+        </div>
         {/* 预订须知 */}
         <div
           id="notes"
           className={styles.productDetailContainer}
-        ></div>
+        >
+          <Divider orientation={'center'}>
+            <Typography.Title level={3}>预定须知</Typography.Title>
+          </Divider>
+          <div
+            dangerouslySetInnerHTML={{ __html: product.notes }}
+            style={{ margin: 50 }}
+          ></div>
+        </div>
         {/* 商品评价 */}
         <div
           id="comments"
           className={styles.productDetailContainer}
-        ></div>
+        >
+          <Divider orientation={'center'}>
+            <Typography.Title level={3}>用户评价</Typography.Title>
+          </Divider>
+          <div style={{ margin: 40 }}>
+            <ProductComments data={commentMockData} />
+          </div>
+        </div>
       </div>
       <Footer />
     </>
