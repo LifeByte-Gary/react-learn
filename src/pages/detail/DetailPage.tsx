@@ -15,7 +15,6 @@ import { productDetailSlice } from '@/redux/productDetail/slice'
 // }
 
 export const DetailPage: React.FC = () => {
-  // const { id } = useParams<keyof MatchParams>()
   const loading = useAppSelector((state) => state.productDetail.loading)
   const error = useAppSelector((state) => state.productDetail.error)
   const product = useAppSelector((state) => state.productDetail.product)
