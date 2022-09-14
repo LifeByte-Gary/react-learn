@@ -1,9 +1,9 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { combineReducers } from 'redux'
 import languageReducer from '@/redux/language/reducer'
 import recommendedProductsReducer from '@/redux/recommendedProducts/reducer'
-import thunk from 'redux-thunk'
-import { actionLog } from '@/redux/middlewares/actionLog'
 import { productDetailSlice } from '@/redux/productDetail/slice'
+import { configureStore } from '@reduxjs/toolkit'
+import { actionLog } from '@/redux/middlewares/actionLog'
 
 const rootReducer = combineReducers({
   language: languageReducer,
@@ -11,7 +11,13 @@ const rootReducer = combineReducers({
   productDetail: productDetailSlice.reducer
 })
 
-const store = createStore(rootReducer, applyMiddleware(thunk, actionLog))
+// const store = createStore(rootReducer, applyMiddleware(thunk, actionLog))
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(actionLog),
+  devTools: true
+})
 
 export default store
 

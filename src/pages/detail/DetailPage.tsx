@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-// import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import { Params, useParams } from 'react-router-dom'
 import { Anchor, Col, Divider, Menu, Row, Spin, TimePicker, Typography } from 'antd'
 import styles from './DetailPage.module.css'
 import { Footer, Header } from '@/components'
@@ -8,30 +7,30 @@ import { ProductIntro } from '@/components/productIntro'
 import { ProductComments } from '@/components/productComments'
 import { commentMockData } from './mockup'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { productDetailSlice } from '@/redux/productDetail/slice'
+import { getProductDetail } from '@/redux/productDetail/slice'
 
-// interface MatchParams {
-//   id: string
-// }
+interface MatchParams extends Params {
+  id: string
+}
 
 export const DetailPage: React.FC = () => {
+  const { id } = useParams<MatchParams>()
   const loading = useAppSelector((state) => state.productDetail.loading)
   const error = useAppSelector((state) => state.productDetail.error)
   const product = useAppSelector((state) => state.productDetail.product)
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      dispatch(productDetailSlice.actions.fetchStart())
-      try {
-        const { data } = await axios.get('http://123.56.149.216:8080/api/touristRoutes/fb6d4f10-79ed-4aff-a915-4ce29dc9c7e1')
-        dispatch(productDetailSlice.actions.fetchSuccess(data))
-      } catch (err) {
-        dispatch(productDetailSlice.actions.fetchError(err instanceof Error ? err.message : 'Error'))
-      }
-    }
+  const anchors = [
+    { href: '#feature', title: '产品特色' },
+    { href: '#fees', title: '费用' },
+    { href: '#notes', title: '预订须知' },
+    { href: '#comments', title: '用户评价' }
+  ]
 
-    void fetchData()
+  useEffect(() => {
+    if (id != null) {
+      void dispatch(getProductDetail(id))
+    }
   }, [])
 
   if (loading)
@@ -74,32 +73,18 @@ export const DetailPage: React.FC = () => {
         </div>
         {/* 锚点菜单 */}
         <Anchor className={styles.productDetailAnchor}>
-          <Menu mode="horizontal">
-            <Menu.Item key="1">
-              <Anchor.Link
-                href="#feature"
-                title="产品特色"
-              ></Anchor.Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Anchor.Link
-                href="#fees"
-                title="费用"
-              ></Anchor.Link>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Anchor.Link
-                href="#notes"
-                title="预订须知"
-              ></Anchor.Link>
-            </Menu.Item>
-            <Menu.Item key="5">
-              <Anchor.Link
-                href="#comments"
-                title="用户评价"
-              ></Anchor.Link>
-            </Menu.Item>
-          </Menu>
+          <Menu
+            mode="horizontal"
+            items={anchors.map((anchor) => ({
+              key: anchor.title,
+              label: (
+                <Anchor.Link
+                  href={anchor.href}
+                  title={anchor.title}
+                />
+              )
+            }))}
+          />
         </Anchor>
         {/* 产品特色 */}
         <div
