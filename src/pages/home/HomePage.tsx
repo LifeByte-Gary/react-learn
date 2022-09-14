@@ -1,5 +1,5 @@
 import React from 'react'
-import { Carousel, Footer, Header, ProductCollection, SideMenu, Sponsors } from '@/components'
+import { Carousel, ProductCollection, SideMenu, Sponsors, TheMainLayout } from '@/components'
 import styles from './HomePage.module.css'
 import { Col, Row, Spin, Typography } from 'antd'
 import sideImage from '@images/sider_2019_12-09.png'
@@ -70,8 +70,7 @@ class HomePageComponent extends React.Component<PropsType> {
 
     if (this.props.error != null) return <div>Error: {this.props.error}</div>
     return (
-      <>
-        <Header />
+      <TheMainLayout>
         <div className={styles.pageContent}>
           <Row style={{ marginTop: 20 }}>
             <Col span={6}>
@@ -119,8 +118,7 @@ class HomePageComponent extends React.Component<PropsType> {
           />
           <Sponsors />
         </div>
-        <Footer />
-      </>
+      </TheMainLayout>
     )
   }
 }
