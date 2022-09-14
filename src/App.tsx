@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './App.module.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { DetailPage, HomePage, RegisterPage, SignInPage } from '@/pages'
+import { DetailPage, HomePage, RegisterPage, SearchPage, SignInPage } from '@/pages'
 import '@/i18n/configs'
 
 function App(): JSX.Element {
@@ -14,16 +14,20 @@ function App(): JSX.Element {
             element={<HomePage />}
           />
           <Route
-            path="sign-in"
+            path="/sign-in"
             element={<SignInPage />}
           />
           <Route
-            path="register"
+            path="/register"
             element={<RegisterPage />}
           />
           <Route
-            path="trips/:id"
+            path="/trips/:id"
             element={<DetailPage />}
+          />
+          <Route
+            path="/search/:keyword"
+            element={<SearchPage />}
           />
           <Route
             path="*"
