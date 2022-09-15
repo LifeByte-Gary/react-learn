@@ -5,12 +5,14 @@ import { productSearchSlice } from '@/redux/productSearch/slice'
 import { recommendedProductsSlice } from '@/redux/recommendedProducts/slice'
 import { productDetailSlice } from '@/redux/productDetail/slice'
 import { languageSlice } from '@/redux/language/slice'
+import { userSlice } from '@/redux/user/slice'
 
 const rootReducer = combineReducers({
   language: languageSlice.reducer,
   recommendedProducts: recommendedProductsSlice.reducer,
   productDetail: productDetailSlice.reducer,
-  productSearch: productSearchSlice.reducer
+  productSearch: productSearchSlice.reducer,
+  user: userSlice.reducer
 })
 
 const store = configureStore({

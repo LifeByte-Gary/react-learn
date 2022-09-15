@@ -1,10 +1,33 @@
 import { Button, Checkbox, Form, Input } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './SignInForm.module.css'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useNavigate } from 'react-router-dom'
+import { signIn } from '@/redux/user/slice'
 
 export const SignInForm: React.FC = () => {
+  const loading = useAppSelector((state) => state.user.loading)
+  const error = useAppSelector((state) => state.user.error)
+  const jwt = useAppSelector((state) => state.user.token)
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (error != null) alert(error)
+
+    if (jwt != null) {
+      navigate('/')
+    }
+  }, [jwt, error])
+
   const onFinish = (values: any): void => {
-    console.log('Success:', values)
+    void dispatch(
+      signIn({
+        email: values.email,
+        password: values.password
+      })
+    )
   }
 
   const onFinishFailed = (errorInfo: any): void => {
@@ -56,6 +79,7 @@ export const SignInForm: React.FC = () => {
         <Button
           type="primary"
           htmlType="submit"
+          loading={loading}
         >
           Submit
         </Button>
