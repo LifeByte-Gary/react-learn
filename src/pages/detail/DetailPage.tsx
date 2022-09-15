@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Params, useParams } from 'react-router-dom'
-import { Anchor, Col, Divider, Menu, Row, Spin, TimePicker, Typography } from 'antd'
+import { Anchor, Col, DatePicker, Divider, Menu, Row, Spin, Typography } from 'antd'
 import styles from './DetailPage.module.css'
 import { Footer, Header } from '@/components'
 import { ProductIntro } from '@/components/productIntro'
@@ -54,7 +54,7 @@ export const DetailPage: React.FC = () => {
         {/* 产品简介 与 日期选择 */}
         <div className={styles.productIntroContainer}>
           <Row>
-            <Col span={19}>
+            <Col span={13}>
               <ProductIntro
                 title={product.title}
                 shortDescription={product.description}
@@ -66,8 +66,8 @@ export const DetailPage: React.FC = () => {
                 pictures={product.touristRoutePictures.map((p) => p.url)}
               />
             </Col>
-            <Col span={5}>
-              <TimePicker.RangePicker style={{ marginTop: 20 }} />
+            <Col span={11}>
+              <DatePicker.RangePicker style={{ marginTop: 20 }} />
             </Col>
           </Row>
         </div>
