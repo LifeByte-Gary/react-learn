@@ -1,10 +1,25 @@
 import { Button, Checkbox, Form, Input } from 'antd'
 import React from 'react'
 import styles from './RegisterForm.module.css'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export const RegisterForm: React.FC = () => {
+  const navigate = useNavigate()
+
   const onFinish = (values: any): void => {
-    console.log('Success:', values)
+    void (async () => {
+      try {
+        await axios.post('http://123.56.149.216:8080/auth/register', {
+          email: values.email,
+          password: values.password,
+          confirmPassword: values.confirm
+        })
+        navigate('/sign-in')
+      } catch (err) {
+        alert('Failed to register')
+      }
+    })()
   }
 
   const onFinishFailed = (errorInfo: any): void => {
@@ -23,9 +38,16 @@ export const RegisterForm: React.FC = () => {
       className={styles.registerForm}
     >
       <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
+        label="Email"
+        name="email"
+        hasFeedback
+        rules={[
+          {
+            type: 'email',
+            message: 'The input is not valid E-mail!'
+          },
+          { required: true, message: 'Please input your Email!' }
+        ]}
       >
         <Input />
       </Form.Item>
@@ -33,6 +55,7 @@ export const RegisterForm: React.FC = () => {
       <Form.Item
         label="Password"
         name="password"
+        hasFeedback
         rules={[{ required: true, message: 'Please input your password!' }]}
       >
         <Input.Password />
