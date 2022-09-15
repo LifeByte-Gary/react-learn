@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 interface ProductDetailState {
@@ -22,20 +22,7 @@ export const getProductDetail = createAsyncThunk('productDetail/getProductDetail
 export const productDetailSlice = createSlice({
   name: 'productDetail',
   initialState,
-  reducers: {
-    fetchStart: (state) => {
-      state.loading = true
-    },
-    fetchSuccess: (state, action) => {
-      state.loading = false
-      state.error = undefined
-      state.product = action.payload
-    },
-    fetchError: (state, action: PayloadAction<string | undefined>) => {
-      state.loading = false
-      state.error = action.payload
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getProductDetail.pending, (state) => {
       state.loading = true

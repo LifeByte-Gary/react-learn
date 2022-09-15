@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 import languageReducer from '@/redux/language/reducer'
-import recommendedProductsReducer from '@/redux/recommendedProducts/reducer'
 import { productDetailSlice } from '@/redux/productDetail/slice'
 import { configureStore } from '@reduxjs/toolkit'
 import { actionLog } from '@/redux/middlewares/actionLog'
 import { productSearchSlice } from '@/redux/productSearch/slice'
+import { recommendedProductsSlice } from '@/redux/recommendedProducts/slice'
 
 const rootReducer = combineReducers({
   language: languageReducer,
-  recommendedProducts: recommendedProductsReducer,
+  recommendedProducts: recommendedProductsSlice.reducer,
   productDetail: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer
 })
