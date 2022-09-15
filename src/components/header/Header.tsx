@@ -5,22 +5,18 @@ import logo from '@/assets/react.svg'
 import { GlobalOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { addLanguageActionCreator, changeLanguageActionCreator } from '@/redux/language/actions'
 import { useTranslation } from 'react-i18next'
+import { changeLanguage } from '@/redux/language/slice'
 
 export const Header: React.FC = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const language = useAppSelector((state) => state.language.language)
+  const language = useAppSelector((state) => state.language.current)
   const languageList = useAppSelector((state) => state.language.languageList)
   const dispatch = useAppDispatch()
 
   const menuClickHandler = (e): void => {
-    if (e.key === 'new') {
-      dispatch(addLanguageActionCreator('新语言', 'new_lang'))
-    } else {
-      dispatch(changeLanguageActionCreator(e.key))
-    }
+    void dispatch(changeLanguage(e.key))
   }
 
   return (
@@ -36,8 +32,7 @@ export const Header: React.FC = () => {
                 items={[
                   ...languageList.map((l) => {
                     return { key: l.code, label: l.name }
-                  }),
-                  { key: 'new', label: t('header.add_new_language') }
+                  })
                 ]}
               />
             }
