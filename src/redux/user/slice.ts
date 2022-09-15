@@ -3,14 +3,14 @@ import axios from 'axios'
 
 interface UserState {
   loading: boolean
-  error: string | undefined
-  token: string | undefined
+  error: string | null
+  token: string | null
 }
 
 const initialState: UserState = {
   loading: false,
-  error: undefined,
-  token: undefined
+  error: null,
+  token: null
 }
 
 export const signIn = createAsyncThunk(
@@ -34,21 +34,27 @@ export const signIn = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.loading = false
+      state.error = null
+      state.token = null
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signIn.pending, (state) => {
         state.loading = true
-        state.error = undefined
+        state.error = null
       })
       .addCase(signIn.fulfilled, (state, { payload }) => {
         state.loading = false
-        state.error = undefined
+        state.error = null
         state.token = payload
       })
       .addCase(signIn.rejected, (state, { error }) => {
         state.loading = false
-        state.error = error.message
+        state.error = error.message as string
       })
   }
 })

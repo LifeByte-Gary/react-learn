@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Header.module.css'
 import { Button, Dropdown, Input, Layout, Menu, Typography } from 'antd'
 import logo from '@/assets/react.svg'
@@ -7,6 +7,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { useTranslation } from 'react-i18next'
 import { changeLanguage } from '@/redux/language/slice'
+import jwt_decode, { JwtPayload as DefaultJwtPayload } from 'jwt-decode'
+import { userSlice } from '@/redux/user/slice'
+
+interface JwtPayload extends DefaultJwtPayload {
+  username: string
+}
 
 export const Header: React.FC = () => {
   const navigate = useNavigate()
@@ -14,9 +20,22 @@ export const Header: React.FC = () => {
   const language = useAppSelector((state) => state.language.current)
   const languageList = useAppSelector((state) => state.language.languageList)
   const dispatch = useAppDispatch()
+  const jwt = useAppSelector((state) => state.user.token)
+  const [username, setUsername] = useState('')
+
+  useEffect(() => {
+    if (jwt != null) {
+      setUsername(jwt_decode<JwtPayload>(jwt).username)
+    }
+  }, [jwt])
 
   const menuClickHandler = (e): void => {
     void dispatch(changeLanguage(e.key))
+  }
+
+  const onLogout = (): void => {
+    dispatch(userSlice.actions.logout())
+    navigate('/')
   }
 
   return (
@@ -40,10 +59,21 @@ export const Header: React.FC = () => {
           >
             {language === 'zh' ? '中文' : 'English'}
           </Dropdown.Button>
-          <Button.Group className={styles.buttonGroup}>
-            <Button onClick={() => navigate('/register')}>{t('header.register')}</Button>
-            <Button onClick={() => navigate('/sign-in')}>{t('header.signin')}</Button>
-          </Button.Group>
+          {jwt != null ? (
+            <Button.Group className={styles.buttonGroup}>
+              <span>
+                {t('header.welcome')}
+                <Typography.Text strong>{username}</Typography.Text>
+              </span>
+              <Button>{t('header.shoppingCart')}</Button>
+              <Button onClick={onLogout}>{t('header.signOut')}</Button>
+            </Button.Group>
+          ) : (
+            <Button.Group className={styles.buttonGroup}>
+              <Button onClick={() => navigate('/register')}>{t('header.register')}</Button>
+              <Button onClick={() => navigate('/sign-in')}>{t('header.signin')}</Button>
+            </Button.Group>
+          )}
         </div>
       </div>
       <Layout.Header className={styles.mainHeader}>
