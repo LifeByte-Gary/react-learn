@@ -3,8 +3,9 @@ import styles from './ShoppingCartPage.module.css'
 import { ProductList, TheMainLayout } from '@/components'
 import { Affix, Col, Row } from 'antd'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
-import { clearShoppingCart } from '@/redux/shoppingCart/slice'
+import { checkout, clearShoppingCart } from '@/redux/shoppingCart/slice'
 import { PaymentCard } from '@/components/paymentCard'
+import { useNavigate } from 'react-router-dom'
 
 export const ShoppingCartPage: React.FC = () => {
   const loading = useAppSelector((state) => state.shoppingCart.loading)
@@ -12,6 +13,7 @@ export const ShoppingCartPage: React.FC = () => {
   const jwt = useAppSelector((state) => state.user.token) as string
 
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   return (
     <TheMainLayout>
@@ -30,7 +32,12 @@ export const ShoppingCartPage: React.FC = () => {
                 loading={loading}
                 originalPrice={items.map((s) => s.originalPrice).reduce((a: number, b: number) => a + b, 0)}
                 price={items.map((s) => s.originalPrice * (s.discountPresent != null ? s.discountPresent : 1)).reduce((a, b) => a + b, 0)}
-                onCheckout={() => {}}
+                onCheckout={() => {
+                  if (items.length > 0) {
+                    void dispatch(checkout(jwt))
+                    navigate('/place-order')
+                  }
+                }}
                 onShoppingCartClear={() => {
                   void dispatch(
                     clearShoppingCart({
