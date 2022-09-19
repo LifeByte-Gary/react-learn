@@ -6,6 +6,14 @@ import { recommendedProductsSlice } from '@/redux/recommendedProducts/slice'
 import { productDetailSlice } from '@/redux/productDetail/slice'
 import { languageSlice } from '@/redux/language/slice'
 import { userSlice } from '@/redux/user/slice'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['user']
+}
 
 const rootReducer = combineReducers({
   language: languageSlice.reducer,
@@ -15,13 +23,17 @@ const rootReducer = combineReducers({
   user: userSlice.reducer
 })
 
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(actionLog),
   devTools: true
 })
 
-export default store
+const persistor = persistStore(store)
+
+export default { store, persistor }
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
