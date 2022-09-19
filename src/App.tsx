@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styles from './App.module.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { DetailPage, HomePage, RegisterPage, SearchPage, ShoppingCartPage, SignInPage } from '@/pages'
+import { DetailPage, HomePage, PlaceOrderPage, RegisterPage, SearchPage, ShoppingCartPage, SignInPage } from '@/pages'
 import '@/i18n/configs'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { fetchShoppingCart } from '@/redux/shoppingCart/slice'
@@ -54,6 +54,14 @@ function App(): JSX.Element {
             element={
               <PrivateRoute>
                 <ShoppingCartPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/place-order"
+            element={
+              <PrivateRoute>
+                <PlaceOrderPage />
               </PrivateRoute>
             }
           />
