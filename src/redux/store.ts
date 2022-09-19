@@ -8,6 +8,8 @@ import { languageSlice } from '@/redux/language/slice'
 import { userSlice } from '@/redux/user/slice'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { shoppingCartSlice } from '@/redux/shoppingCart/slice'
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants'
 
 const persistConfig = {
   key: 'root',
@@ -20,14 +22,20 @@ const rootReducer = combineReducers({
   recommendedProducts: recommendedProductsSlice.reducer,
   productDetail: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer,
-  user: userSlice.reducer
+  user: userSlice.reducer,
+  shoppingCart: shoppingCartSlice.reducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(actionLog),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    }).concat(actionLog),
   devTools: true
 })
 
