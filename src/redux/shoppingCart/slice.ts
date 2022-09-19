@@ -48,11 +48,13 @@ export const clearShoppingCart = createAsyncThunk('shoppingCart/clear', async (p
 })
 
 export const checkout = createAsyncThunk('shoppingCart/checkout', async (jwt: string) => {
-  return await axios.post('http://123.56.149.216:8080/api/shoppingCart/checkout', null, {
+  const { data } = await axios.post('http://123.56.149.216:8080/api/shoppingCart/checkout', null, {
     headers: {
       Authorization: `bearer ${jwt}`
     }
   })
+
+  return data
 })
 
 export const shoppingCartSlice = createSlice({
