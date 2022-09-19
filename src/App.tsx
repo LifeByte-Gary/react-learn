@@ -1,19 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './App.module.css'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { DetailPage, HomePage, RegisterPage, SearchPage, ShoppingCartPage, SignInPage } from '@/pages'
 import '@/i18n/configs'
-import { useAppSelector } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { fetchShoppingCart } from '@/redux/shoppingCart/slice'
 
 interface PrivateRouteProps {
   children: JSX.Element
 }
 
+const PrivateRoute = ({ children }: PrivateRouteProps): JSX.Element | null => {
+  const jwt = useAppSelector((state) => state.user.token)
+  return jwt != null ? children : <Navigate to={'/sign-in'} />
+}
+
 function App(): JSX.Element {
-  const PrivateRoute = ({ children }: PrivateRouteProps): JSX.Element | null => {
-    const jwt = useAppSelector((state) => state.user.token)
-    return jwt != null ? children : <Navigate to={'/sign-in'} />
-  }
+  const jwt = useAppSelector((state) => state.user.token)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (jwt != null) {
+      void dispatch(fetchShoppingCart(jwt))
+    }
+  }, [jwt])
+
   return (
     <div className={styles.App}>
       <BrowserRouter>

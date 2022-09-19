@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Params, useParams } from 'react-router-dom'
-import { Anchor, Col, DatePicker, Divider, Menu, Row, Spin, Typography } from 'antd'
+import { Anchor, Button, Col, DatePicker, Divider, Menu, Row, Spin, Typography } from 'antd'
 import styles from './DetailPage.module.css'
 import { Footer, Header } from '@/components'
 import { ProductIntro } from '@/components/productIntro'
@@ -8,6 +8,8 @@ import { ProductComments } from '@/components/productComments'
 import { commentMockData } from './mockup'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { getProductDetail } from '@/redux/productDetail/slice'
+import { ShoppingCartOutlined } from '@ant-design/icons'
+import { addShoppingCartItem } from '@/redux/shoppingCart/slice'
 
 interface MatchParams extends Params {
   id: string
@@ -15,10 +17,15 @@ interface MatchParams extends Params {
 
 export const DetailPage: React.FC = () => {
   const { id } = useParams<MatchParams>()
+  const dispatch = useAppDispatch()
+
   const loading = useAppSelector((state) => state.productDetail.loading)
   const error = useAppSelector((state) => state.productDetail.error)
   const product = useAppSelector((state) => state.productDetail.product)
-  const dispatch = useAppDispatch()
+
+  const jwt = useAppSelector((state) => state.user.token) as string
+
+  const shoppingCartLoading = useAppSelector((state) => state.shoppingCart.loading)
 
   const anchors = [
     { href: '#feature', title: '产品特色' },
@@ -67,6 +74,18 @@ export const DetailPage: React.FC = () => {
               />
             </Col>
             <Col span={11}>
+              <Button
+                style={{ marginTop: 50, marginBottom: 30, display: 'block' }}
+                type="primary"
+                danger
+                loading={shoppingCartLoading}
+                onClick={() => {
+                  void dispatch(addShoppingCartItem({ jwt, touristRouteId: product.id }))
+                }}
+              >
+                <ShoppingCartOutlined />
+                放入购物车
+              </Button>
               <DatePicker.RangePicker style={{ marginTop: 20 }} />
             </Col>
           </Row>

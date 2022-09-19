@@ -27,7 +27,7 @@ export const addShoppingCartItem = createAsyncThunk('shoppingCart/add', async (p
   const { data } = await axios.post(
     'http://123.56.149.216:8080/api/shoppingCart/items',
     {
-      touristRouteIdL: params.touristRouteId
+      touristRouteId: params.touristRouteId
     },
     {
       headers: {
@@ -40,7 +40,7 @@ export const addShoppingCartItem = createAsyncThunk('shoppingCart/add', async (p
 })
 
 export const clearShoppingCart = createAsyncThunk('shoppingCart/clear', async (params: { jwt: string; ids: number[] }) => {
-  return await axios.delete(`http://123.56.149.216:8080/api/shoppingCart/items/${params.ids.join(',')}`, {
+  return await axios.delete(`http://123.56.149.216:8080/api/shoppingCart/items/(${params.ids.join(',')})`, {
     headers: {
       Authorization: `bearer ${params.jwt}`
     }
@@ -91,6 +91,7 @@ export const shoppingCartSlice = createSlice({
       .addCase(clearShoppingCart.fulfilled, (state) => {
         state.loading = false
         state.error = null
+        state.items = []
       })
       .addCase(clearShoppingCart.rejected, (state, { error }) => {
         state.loading = false
